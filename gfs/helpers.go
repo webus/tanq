@@ -1,14 +1,14 @@
 package gfs
 
 import (
-	"log"
 	"strings"
+	"path/filepath"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
+	log "github.com/Sirupsen/logrus"
 	"github.com/palantir/stacktrace"
 	"github.com/webus/tanq/conf"
 	"github.com/webus/tanq/collections"
-	"path/filepath"
 )
 
 func (c *MongoGFS) getMongoConnection() {
