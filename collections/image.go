@@ -4,7 +4,7 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
-// ImageCollection struct
+// ImageCollection - MongoDB collection structure to store files meta info
 type ImageCollection struct {
 	URL string
 	ETag string
