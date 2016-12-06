@@ -5,11 +5,14 @@ import (
 	"path/filepath"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
-	log "github.com/Sirupsen/logrus"
+	//log "github.com/Sirupsen/logrus"
 	"github.com/palantir/stacktrace"
 	"github.com/webus/tanq/conf"
 	"github.com/webus/tanq/collections"
+	logger "github.com/webus/tanq/log"
 )
+
+var log = logger.GetLogger()
 
 func (c *MongoGFS) getMongoConnection() {
 	log.Debug("Checking connection with Mongo")
