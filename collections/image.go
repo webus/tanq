@@ -6,6 +6,7 @@ import (
 
 // ImageCollection - MongoDB collection structure to store files meta info
 type ImageCollection struct {
+	Id bson.ObjectId `bson:",omitempty"`
 	URL string
 	ETag string
 	LastModified string

@@ -12,7 +12,9 @@ import (
 )
 
 func (c *MongoGFS) getMongoConnection() {
+	log.Debug("Checking connection with Mongo")
 	if c.MongoSession != nil && c.MongoDB != nil && c.MongoCollection != nil && c.GFS != nil {
+		log.Debug("Connection with Mongo already exists")
 		return
 	}
 	c.Conf = conf.GetConf()

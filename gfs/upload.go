@@ -17,13 +17,16 @@ func (c *MongoGFS) UploadFileByURL(url string) *collections.ImageCollection {
 	// 3. make file on GFS
 	// 4. copy file to GFS
 	// 5. return collections.ImageCollection instance
+	log.Debug("???")
 	c.getMongoConnection()
 
 	result := collections.ImageCollection{}
+	result.Id = bson.NewObjectId()
 
+	log.WithFields(log.Fields{"url": url}).Debug("Upload new image")
 	client := http.Client{}
 	respGet, err := client.Get(url)
-	log.Debug("Upload new from ", url)
+	log.WithFields(log.Fields{"url": url}).Debug("Uploaded image")
 
 	if err != nil {
 		log.Fatal(stacktrace.Propagate(err, "Error on client.Get"))
@@ -41,11 +44,13 @@ func (c *MongoGFS) UploadFileByURL(url string) *collections.ImageCollection {
 		log.Fatal(stacktrace.Propagate(err,"Error on gfs.Create"))
 	}
 	defer file.Close()
+	log.WithFields(log.Fields{fileName: fileName}).Debug("Created empty file in GridFS")
 
 	_, err = io.Copy(file, respGet.Body)
 	if err != nil {
 		log.Fatal(stacktrace.Propagate(err,"Error on Copy"))
 	}
+	log.WithFields(log.Fields{fileName: fileName}).Debug("File content copied into GridFS file")
 
 	result.URL = url
 	result.ETag = respGet.Header.Get("Etag")
@@ -57,6 +62,7 @@ func (c *MongoGFS) UploadFileByURL(url string) *collections.ImageCollection {
 		log.Printf("%+v\n", &result)
 		log.Fatal(stacktrace.Propagate(err,"Error on insert in MongoDB"))
 	}
+	log.WithFields(log.Fields{"id": result.Id}).Debug("New ImageCollection created")
 
 	return &result
 }
